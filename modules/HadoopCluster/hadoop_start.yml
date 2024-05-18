@@ -1,0 +1,17 @@
+# hadoop_start.yml
+---
+- hosts: master
+  become: yes
+  tasks:
+    - name: Format the HDFS namenode
+      command: hdfs namenode -format
+      become_user: hadoop
+
+    - name: Start HDFS
+      command: start-dfs.sh
+      become_user: hadoop
+
+    - name: Start YARN
+      command: start-yarn.sh
+      become_user: hadoop
+
