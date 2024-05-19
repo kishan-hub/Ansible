@@ -1,0 +1,38 @@
+# hadoop_prerequisites.yml
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Update the package index
+      apt:
+        update_cache: yes
+
+    - name: Install Java
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Create Hadoop group
+      group:
+        name: hadoop
+        state: present
+
+    - name: Create Hadoop user
+      user:
+        name: hadoop
+        group: hadoop
+        create_home: yes
+        shell: /bin/bash
+
+    - name: Set Hadoop user password
+      user:
+        name: hadoop
+        password: "{{ 'password' | password_hash('sha512') }}"
+        update_password: on_create
+
+    - name: Allow passwordless sudo for Hadoop user
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'hadoop ALL=(ALL) NOPASSWD:ALL'
+        validate: 'visudo -cf %s'
+

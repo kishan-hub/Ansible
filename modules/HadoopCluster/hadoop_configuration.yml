@@ -1,0 +1,89 @@
+# hadoop_configure.yml
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Configure Hadoop environment variables
+      copy:
+        content: |
+          export HADOOP_HOME=/usr/local/hadoop
+          export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop
+          export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+        dest: /etc/profile.d/hadoop.sh
+        owner: hadoop
+        group: hadoop
+        mode: '0755'
+
+    - name: Source Hadoop environment variables
+      shell: source /etc/profile.d/hadoop.sh
+      args:
+        executable: /bin/bash
+
+    - name: Configure core-site.xml
+      copy:
+        content: |
+          <configuration>
+            <property>
+              <name>fs.defaultFS</name>
+              <value>hdfs://master-node:9000</value>
+            </property>
+          </configuration>
+        dest: /usr/local/hadoop/etc/hadoop/core-site.xml
+        owner: hadoop
+        group: hadoop
+        mode: '0644'
+
+    - name: Configure hdfs-site.xml
+      copy:
+        content: |
+          <configuration>
+            <property>
+              <name>dfs.replication</name>
+              <value>3</value>
+            </property>
+            <property>
+              <name>dfs.namenode.name.dir</name>
+              <value>file:///usr/local/hadoop/data/namenode</value>
+            </property>
+            <property>
+              <name>dfs.datanode.data.dir</name>
+              <value>file:///usr/local/hadoop/data/datanode</value>
+            </property>
+          </configuration>
+        dest: /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+        owner: hadoop
+        group: hadoop
+        mode: '0644'
+
+    - name: Configure mapred-site.xml
+      copy:
+        content: |
+          <configuration>
+            <property>
+              <name>mapreduce.framework.name</name>
+              <value>yarn</value>
+            </property>
+          </configuration>
+        dest: /usr/local/hadoop/etc/hadoop/mapred-site.xml
+        owner: hadoop
+        group: hadoop
+        mode: '0644'
+
+    - name: Configure yarn-site.xml
+      copy:
+        content: |
+          <configuration>
+            <property>
+              <name>yarn.resourcemanager.hostname</name>
+              <value>master-node</value>
+            </property>
+            <property>
+              <name>yarn.nodemanager.aux-services</name>
+              <value>mapreduce_shuffle</value>
+            </property>
+          </configuration>
+        dest: /usr/local/hadoop/etc/hadoop/yarn-site.xml
+        owner: hadoop
+        group: hadoop
+        mode: '0644'
+

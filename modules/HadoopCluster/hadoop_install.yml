@@ -1,0 +1,30 @@
+# hadoop_install.yml
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Download Hadoop
+      get_url:
+        url: https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
+        dest: /tmp/hadoop-3.3.6.tar.gz
+
+    - name: Extract Hadoop
+      unarchive:
+        src: /tmp/hadoop-3.3.6.tar.gz
+        dest: /usr/local
+        remote_src: yes
+
+    - name: Create symlink for Hadoop
+      file:
+        src: /usr/local/hadoop-3.3.6
+        dest: /usr/local/hadoop
+        state: link
+
+    - name: Change ownership of Hadoop directory
+      file:
+        path: /usr/local/hadoop
+        owner: hadoop
+        group: hadoop
+        state: directory
+        recurse: yes
+
