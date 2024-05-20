@@ -1,0 +1,10 @@
+---
+- name: Create symlink for Hadoop on master node
+  hosts: master
+  tasks:
+    - name: Create symlink for Hadoop
+      file:
+        src: /usr/local/hadoop-3.3.6
+        dest: /usr/local/hadoop
+        state: link
+

@@ -19,13 +19,20 @@
       args:
         executable: /bin/bash
 
+    - name: Ensure Hadoop Configuration Directory exists
+      file :
+        path: /usr/local/hadoop/etc/hadoop
+        state: directory
+        mode: '0755'
+ 
+
     - name: Configure core-site.xml
       copy:
         content: |
           <configuration>
             <property>
               <name>fs.defaultFS</name>
-              <value>hdfs://master-node:9000</value>
+              <value>hdfs://master:9000</value>
             </property>
           </configuration>
         dest: /usr/local/hadoop/etc/hadoop/core-site.xml
@@ -75,7 +82,7 @@
           <configuration>
             <property>
               <name>yarn.resourcemanager.hostname</name>
-              <value>master-node</value>
+              <value>master</value>
             </property>
             <property>
               <name>yarn.nodemanager.aux-services</name>
