@@ -1,0 +1,11 @@
+---
+- name: Check the Disk uses of all file Ssyem in remote server
+  hosts: all
+  tasks:
+    - name: Execue the df command
+      register: dfout
+      command: "df -h"
+
+    - debug: 
+        var: dfout.stdout_lines
+

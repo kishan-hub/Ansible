@@ -1,0 +1,10 @@
+---
+- name: command play
+  hosts: all
+  tasks:
+  - name: Run Shell command
+    shell: /usr/bin/uptime
+
+  - name: Run a shell command
+    shell: "echo $HOME"
+

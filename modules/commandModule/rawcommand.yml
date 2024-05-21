@@ -1,0 +1,7 @@
+---
+ - name: run a raw command
+   hosts: all
+   tasks:
+    - name: Run a raw Command
+      raw: "apt -y install python3"
+

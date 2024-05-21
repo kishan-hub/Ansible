@@ -1,0 +1,7 @@
+2.Get the Hostname and version with remote Servers with UNAME
+3.Check the Disk Uses of Remote Server
+4.Execute a command when a file exists or not exists
+
+
+
+

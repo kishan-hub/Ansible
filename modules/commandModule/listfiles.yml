@@ -1,0 +1,5 @@
+---
+- name: List files in Specific directory
+  command: ls -l
+  args:
+    chdir: /home/vagrant
