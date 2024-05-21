@@ -1,0 +1,22 @@
+---
+  - name: Validate if a file is present or not present
+    hosts: all
+    tasks:
+      - name: "Create a file if it does not exist"
+        command: "touch /tmp/hello.txt"
+        args: 
+          creates: "/tmp/hello.txt"
+        register: createif
+
+      - name: "Display the file to make sure its created"
+        command: "ls -la /tmp/hello.txt"
+        register: displayif
+        when: createif is changed
+ 
+      - debug: var=displayif.stdout
+
+#      - name: "Remove the file if it exist"
+#        command: "rm -rf /tmp/latestfile"
+#        args:
+#           removes: "/tmp/latestfile"
+#        register: removeif
